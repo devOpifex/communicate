@@ -4,14 +4,23 @@ let endpoints = {};
 
 Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
   console.log(msg);
-
   endpoints[msg.id] = msg
-
-  console.log(endpoints);
-  if(!endpoints.data)
-    return;
-
-  fetch(`${endpoints.data.path}`)
-    .then((response) => response.json())
-    .then((data) => console.log(data));
+  get(msg.id, {x: 1})
+    .then(data => console.log(data))
 });
+
+async function get(name, args = {}) {
+  const qs = Object.keys(args)
+    .map(key => {
+      return `${key}=${encodeURIComponent(args[key])}`;
+    })
+    .join('&');
+
+  return fetch(`${endpoints[name].path}&${qs}`)
+    .then(res => res.json())
+    .then(data => {
+      return(data)
+    });
+}
+
+export { get };

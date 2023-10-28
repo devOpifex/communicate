@@ -5,22 +5,17 @@ add <- \(x, y = 41) {
   x + y
 }
 
-react <- \(r) {
-  r$x
-}
-
 ui <- fluidPage(
   useCommunicate(),
   h1("Hello")
 )
 
 server <- \(input, output, session){
-  data <- reactiveValues(
+  d <- reactiveValues(
     x = runif(10)
   )
 
   com("add")(add)
-  com("data")(react)()(r = data)
   communicate()
 }
 

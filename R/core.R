@@ -21,12 +21,12 @@ get_prefix <- function() {
 #' 
 #' @export
 com <- \(id) {
-  #id <- sprintf("%s-%s", get_prefix(), id)
+  id <- sprintf("%s%s", get_prefix(), id)
 
   \(handler){
     env$handlers[[id]] <- handler
     env$schemas[[id]] <- list()
-    env$datas[[id]] <- list()
+    env$defaults[[id]] <- list()
 
     \(...){
       env$schemas[[id]] <- list(...)
@@ -50,34 +50,35 @@ communicate <- \(session = shiny::getDefaultReactiveDomain()) {
   handlers <- env$handlers |> names()
 
   endpoints <- lapply(handlers, \(name) {
-    observe({
+    shiny::observe({
+      fn <- \(data, req) {
+        args <- parse_query_string(req$QUERY_STRING) |>
+          parse_args(env$schemas[[name]])
+       
+        args <- modifyList(env$defaults[[name]], args)
+
+        results <- do.call(
+          env$handlers[[name]], 
+          args
+        ) |>
+          tryCatch(error = \(e) e)
+
+        status = 200L
+        if(inherits(results, "error")) {
+          status <- 400L
+          results <- list(
+            error = results$message,
+            id = results$id
+          )
+        }
+
+        http_response_json(results)
+      }
+
       path <- session$registerDataObj(
         name,
-        list(),
-        \(data, req) {
-          args <- parse_query_string(req$QUERY_STRING) |>
-            parse_args(env$schemas[[name]])
-         
-          args <- modifyList(env$defaults[[name]], args)
-          print(args)
-
-          results <- do.call(
-            env$handlers[[name]], 
-            args
-          ) |>
-            tryCatch(error = \(e) e)
-
-          status = 200L
-          if(inherits(results, "error")) {
-            status <- 400L
-            results <- list(
-              error = results$message,
-              id = results$id
-            )
-          }
-
-          http_response_json(results)
-        }
+        env$defaults[[name]],
+        fn
       )
 
       session$sendCustomMessage(
