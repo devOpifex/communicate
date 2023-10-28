@@ -1,33 +1,70 @@
 env <- new.env(hash = TRUE)
+env$prefix <- NULL
 env$handlers <- list()
 env$schemas<- list()
+env$defaults<- list()
 
-#' Schema
+get_prefix <- function() {
+  if(!is.null(env$prefix))
+    return(env$prefix)
+
+  env$prefix <- make_id()
+
+  return(env$prefix)
+}
+
+#' Communication
+#' 
+#' Communication handler.
+#' 
+#' @param id ID of communication handler.
 #' 
 #' @export
 com <- \(id) {
+  #id <- sprintf("%s-%s", get_prefix(), id)
+
   \(handler){
     env$handlers[[id]] <- handler
     env$schemas[[id]] <- list()
+    env$datas[[id]] <- list()
 
     \(...){
       env$schemas[[id]] <- list(...)
+
+      \(...) {
+        env$defaults[[id]] <- list(...)
+      }
     } |> 
       invisible()
   }
 }
 
+#' Communicate
+#' 
+#' Communicate
+#' 
+#' @param session Shiny session.
+#' 
+#' @export
 communicate <- \(session = shiny::getDefaultReactiveDomain()) {
   handlers <- env$handlers |> names()
 
-  observe({
-    endpoints <- lapply(handlers, \(name) {
+  endpoints <- lapply(handlers, \(name) {
+    observe({
       path <- session$registerDataObj(
         name,
         list(),
         \(data, req) {
-          args <- args_from_query_string(req$QUERY_STRING, env$schemas[[name]])
-          results <- do.call(env$handlers[[name]], args) |>
+          args <- parse_query_string(req$QUERY_STRING) |>
+            parse_args(env$schemas[[name]])
+         
+          args <- modifyList(env$defaults[[name]], args)
+          print(args)
+
+          results <- do.call(
+            env$handlers[[name]], 
+            args
+          ) |>
             tryCatch(error = \(e) e)
 
           status = 200L
@@ -43,16 +80,11 @@ communicate <- \(session = shiny::getDefaultReactiveDomain()) {
         }
       )
 
-      list(
-        path = path,
-        name = name
+      session$sendCustomMessage(
+        type = "communicate-set-path",
+        message = list(id = name, path = path)
       )
     })
-
-    session$sendCustomMessage(
-      type = "communicate-paths",
-      message = list(endpoints = endpoints)
-    )
   })
 }
 

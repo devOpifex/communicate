@@ -1,17 +1,26 @@
 devtools::load_all()
 library(shiny)
 
+add <- \(x, y = 41) {
+  x + y
+}
+
+react <- \(r) {
+  r$x
+}
+
 ui <- fluidPage(
   useCommunicate(),
   h1("Hello")
 )
 
-add <- \(x, y = 41) {
-  x + y
-}
+server <- \(input, output, session){
+  data <- reactiveValues(
+    x = runif(10)
+  )
 
-server <- \(...){
-  com("add")(add)(x = as_integer, y = as_integer)
+  com("add")(add)
+  com("data")(react)()(r = data)
   communicate()
 }
 

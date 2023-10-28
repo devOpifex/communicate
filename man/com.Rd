@@ -2,10 +2,13 @@
 % Please edit documentation in R/core.R
 \name{com}
 \alias{com}
-\title{Schema}
+\title{Communication}
 \usage{
 com(id)
 }
+\arguments{
+\item{id}{ID of communication handler.}
+}
 \description{
-Schema
+Communication handler.
 }
