@@ -46,9 +46,6 @@ as_dataframe
 
 as_list
 }
-\arguments{
-\item{x}{String to convert.}
-}
 \description{
 Type converters for convenience.
 }

@@ -1,6 +1,8 @@
 devtools::load_all()
 library(shiny)
 
+options(shiny.fullstacktrace = TRUE)
+
 df <- \(x){
   return(x)
 }
@@ -11,7 +13,7 @@ ui <- fluidPage(
 )
 
 server <- \(input, output, session){
-  com("df", df)(x = as_dataframe)
+  com("df", df)
   com_run()
 }
 

@@ -20,3 +20,5 @@ Imports:
   shiny,
   jsonlite,
   htmltools
+Suggests:
+  methods

@@ -8,6 +8,8 @@ com(id, handler)
 }
 \arguments{
 \item{id}{ID of communication handler.}
+
+\item{handler}{Callback function.}
 }
 \description{
 Communication handler.

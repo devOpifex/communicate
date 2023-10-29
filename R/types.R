@@ -2,8 +2,6 @@
 #' 
 #' Type converters for convenience.
 #' 
-#' @param x String to convert.
-#' 
 #' @name converters.
 #' @export
 as_character <- list(
@@ -92,7 +90,14 @@ parse_args <- function(args = list(), converters = list()) {
     if(!is.null(dttm))
       return(dttm)
 
-    nbr <- as.numeric(arg)
+    nbr <- as.integer(arg) |>
+      suppressWarnings()
+
+    if(!is.na(nbr))
+      return(nbr)
+
+    nbr <- as.numeric(arg) |>
+      suppressWarnings()
 
     if(!is.na(nbr))
       return(nbr)
@@ -102,6 +107,10 @@ parse_args <- function(args = list(), converters = list()) {
 
     if(arg %in% c("FALSE", "false"))
       return(FALSE)
+
+    # it must be an array or an object
+    if(grepl("\\[", arg))
+      return(fromJSON(arg, simplifyMatrix = TRUE))
 
     return(arg)
   })
@@ -119,15 +128,14 @@ parse_args <- function(args = list(), converters = list()) {
 #' 
 #' @keywords internal
 get_args <- \(handler, schemas){
-  args <- formalArgs(handler)
+  args <- methods::formalArgs(handler)
 
   args |>
-    seq_along() |>
-    lapply(\(index) {
-      schema <- schemas[[index]]
+    lapply(\(name) {
+      schema <- schemas[[name]]
 
       arg <- list(
-        name = args[[index]],
+        name = name,
         type = NULL
       )
 

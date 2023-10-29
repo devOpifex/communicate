@@ -19,6 +19,7 @@ get_prefix <- function() {
 #' Communication handler.
 #' 
 #' @param id ID of communication handler.
+#' @param handler Callback function.
 #' 
 #' @importFrom shiny observe
 #' 
@@ -94,7 +95,7 @@ com_run <- \(session = shiny::getDefaultReactiveDomain()) {
         args <- parse_query_string(req$QUERY_STRING) |>
           parse_args(env$schemas[[name]])
        
-        args <- modifyList(env$defaults[[name]], args)
+        args <- utils::modifyList(env$defaults[[name]], args)
 
         results <- do.call(
           env$handlers[[name]], 
