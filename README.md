@@ -1,5 +1,4 @@
 <div align="center">
-# Communicate
 
 <img src="inst/logo.png" height=200 />
 
