@@ -80,12 +80,12 @@ print.converters_fn <- \(x, ...) {
 
 #' Communicate
 #' 
-#' Run communications.
+#' Serve communication channels.
 #' 
 #' @param session Shiny session.
 #' 
 #' @export
-com_run <- \(session = shiny::getDefaultReactiveDomain()) {
+com_serve <- \(session = shiny::getDefaultReactiveDomain()) {
   handlers <- env$handlers |> names()
 
   endpoints <- lapply(handlers, \(name) {

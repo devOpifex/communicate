@@ -18,7 +18,7 @@ remotes::install_github("devOpifex/communicate")
 
 Create a shiny application and "commincation channels."
 Add callback functions with `com` and start running
-channels with `com_run`.
+channels with `com_serve`.
 
 ```r
 library(shiny)
@@ -34,7 +34,7 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("add", add)
-  com_run()
+  com_serve()
 }
 
 shinyApp(ui, server)
@@ -67,7 +67,7 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("add", add)
-  com_run()
+  com_serve()
 }
 
 shinyApp(ui, server)
@@ -115,7 +115,7 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("add", add)(x = Integer)
-  com_run()
+  com_serve()
 }
 
 shinyApp(ui, server)
@@ -150,7 +150,7 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("add", add)(x = Integer, y = Numeric)(y = 1.1)
-  com_run()
+  com_serve()
 }
 
 shinyApp(ui, server)
@@ -187,7 +187,7 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("add", add)(x = Integer, y = Numeric)(y = 1.1)
-  com_run()
+  com_serve()
 }
 
 shinyApp(ui, server)
