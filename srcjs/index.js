@@ -4,20 +4,55 @@ let endpoints = {};
 
 Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
   endpoints[msg.id] = msg;
-  get(msg.id, { x: [1, 2, 3] })
-    .then((data) => {
-      console.log(data);
-      console.log(typeof data);
-    });
 });
 
-async function get(name, args = {}) {
-  const qs = makeQuery(name, args);
+async function com(id, args = {}) {
+  if (!id) {
+    throw new Error("No name provided");
+  }
 
-  const response = await fetch(`${endpoints[name].path}&${qs}`);
+  if (!hasCom(id)) {
+    throw new Error(`No com found for ${id}`);
+  }
+
+  const qs = makeQuery(id, args);
+
+  const response = await fetch(`${endpoints[id].path}&${qs}`);
   const data = await response.json();
   return data;
 }
+
+const getComs = () => {
+  const ep = [];
+  for (const property in endpoints) {
+    const prop = {
+      id: endpoints[property].id.split("|")[1],
+      args: endpoints[property].args,
+    };
+    ep.push(prop);
+  }
+  return ep;
+};
+
+const getCom = (id) => {
+  if (!id) {
+    throw new Error("No id provided");
+  }
+
+  if (!hasCom(id)) {
+    throw new Error(`No com found for ${id}`);
+  }
+
+  return getComs().filter((com) => com.id === id);
+};
+
+const hasCom = (id) => {
+  if (!id) {
+    throw new Error("No id provided");
+  }
+
+  return getComs().some((com) => com.id === id);
+};
 
 const makeQuery = (name, args) => {
   const valids = endpoints[name].args;
@@ -97,4 +132,4 @@ const typeMatch = (value, valid) => {
   return false;
 };
 
-export { get };
+export { com, getCom, getComs, hasCom };
