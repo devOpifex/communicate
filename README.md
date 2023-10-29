@@ -19,8 +19,6 @@ channels with `com_run`.
 library(shiny)
 library(communicate)
 
-options(shiny.fullstacktrace = TRUE)
-
 add <- \(x){
   x + 2
 }
@@ -45,8 +43,6 @@ Note that the `co
 ```r
 library(shiny)
 library(communicate)
-
-options(shiny.fullstacktrace = TRUE)
 
 add <- \(x){
   x + 2
@@ -97,8 +93,6 @@ Existing types:
 library(shiny)
 library(communicate)
 
-options(shiny.fullstacktrace = TRUE)
-
 add <- \(x){
   x + 2
 }
@@ -134,8 +128,6 @@ You can also specifiy the function defaults as done below.
 library(shiny)
 library(communicate)
 
-options(shiny.fullstacktrace = TRUE)
-
 add <- \(x, y){
   x + y
 }
@@ -144,6 +136,43 @@ script <- "
   $('#btn').on('click', () => {
     communicate.com('add', {x: 1})
       .then(res => alert(`equals: ${res}`));
+  })
+"
+
+ui <- fluidPage(
+  # import dependencies
+  useCommunicate(),
+  h1("Hello"),
+  tags$a("Communicate", id = "btn"),
+  tags$script(HTML(script))
+)
+
+server <- \(input, output, session){
+  com("add", add)(x = Integer, y = Numeric)(y = 1.1)
+  com_run()
+}
+
+shinyApp(ui, server)
+```
+
+## Errors
+
+Ideally you'd want to catch errors as shown below,
+where the callback fails because there is not default for `x`.
+
+```r
+library(shiny)
+library(communicate)
+
+add <- \(x, y){
+  x + y
+}
+
+script <- "
+  $('#btn').on('click', () => {
+    communicate.com('add')
+      .then(res => alert(`equals: ${res}`))
+      .catch(e => alert(e))
   })
 "
 

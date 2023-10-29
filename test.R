@@ -1,7 +1,7 @@
+devtools::load_all()
 library(shiny)
-library(communicate)
 
-options(shiny.fullstacktrace = TRUE)
+options(shiny.fullstacktrace = TRUE, shiny.port = 3000)
 
 add <- \(x, y){
   x + y
@@ -9,8 +9,9 @@ add <- \(x, y){
 
 script <- "
   $('#btn').on('click', () => {
-    communicate.com('add', {x: 1})
-      .then(res => alert(`equals: ${res}`));
+    communicate.com('add')
+      .then(res => alert(`equals: ${res}`))
+      .catch(e => alert(e))
   })
 "
 

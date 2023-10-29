@@ -19,6 +19,9 @@ async function com(id, args = {}) {
 
   const response = await fetch(`${endpoints[id].path}&${qs}`);
   const data = await response.json();
+  if (data.error) {
+    throw new Error(data.error);
+  }
   return data;
 }
 
