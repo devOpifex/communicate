@@ -1,6 +1,7 @@
 # Communicate
 
 Small framework to communicate between Shiny client and server via HTTP requests.
+Run `communicate::example()` for a short demo.
 
 ## Installation
 
