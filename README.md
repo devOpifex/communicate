@@ -205,5 +205,7 @@ communicate.hasCom("add")
 communicate.getCom("add")
 
 communicate.com("add", {x: 1, y: 2})
+  .then(data => console.log(data))
+  .catch(error => console.error(error))
 ```
 
