@@ -8,7 +8,7 @@ Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
 
 async function com(id, args = {}) {
   if (!id) {
-    throw new Error("No name provided");
+    throw new Error("No id provided");
   }
 
   if (!hasCom(id)) {
@@ -26,7 +26,7 @@ const getComs = () => {
   const ep = [];
   for (const property in endpoints) {
     const prop = {
-      id: endpoints[property].id.split("|")[1],
+      id: endpoints[property].id,
       args: endpoints[property].args,
     };
     ep.push(prop);
@@ -54,8 +54,8 @@ const hasCom = (id) => {
   return getComs().some((com) => com.id === id);
 };
 
-const makeQuery = (name, args) => {
-  const valids = endpoints[name].args;
+const makeQuery = (id, args) => {
+  const valids = endpoints[id].args;
   const argNames = Object.keys(args);
 
   return argNames.map((argName) => {

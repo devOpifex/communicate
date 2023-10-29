@@ -4,42 +4,42 @@
 #' 
 #' @name converters.
 #' @export
-as_character <- list(
+Character <- list(
   fn = as.character,
   type = "character"
 )
 
 #' @rdname converters.
 #' @export
-as_integer <- list(
+Integer <- list(
   fn = as.integer,
   type = "integer"
 )
 
 #' @rdname converters.
 #' @export
-as_numeric <- list(
+Numeric <- list(
   fn = as.numeric,
   type = "numeric"
 )
 
 #' @rdname converters.
 #' @export
-as_date <- list(
+Date <- list(
   fn = as.Date,
   type = "date"
 )
 
 #' @rdname converters.
 #' @export
-as_posixct <- list(
+Posixct <- list(
   fn = as.POSIXct,
   type = "posix"
 )
 
 #' @rdname converters.
 #' @export
-as_posixlt <- list(
+Posixlt <- list(
   fn = as.POSIXlt,
   type = "posix"
 )
@@ -47,7 +47,7 @@ as_posixlt <- list(
 #' @importFrom jsonlite fromJSON
 #' @rdname converters.
 #' @export
-as_dataframe <- list(
+Dataframe <- list(
   fn = fromJSON,
   type = "dataframe"
 )
@@ -55,7 +55,7 @@ as_dataframe <- list(
 #' @importFrom jsonlite fromJSON
 #' @rdname converters.
 #' @export
-as_list <- list(
+List <- list(
   fn = \(x) fromJSON(x, simplifyMatrix = FALSE),
   type = "list"
 )

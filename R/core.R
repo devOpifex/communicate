@@ -25,7 +25,6 @@ get_prefix <- function() {
 #' 
 #' @export
 com <- \(id, handler) {
-  id <- sprintf("%s|%s", get_prefix(), id)
   env$handlers[[id]] <- handler
   env$schemas[[id]] <- list()
   env$defaults[[id]] <- list()

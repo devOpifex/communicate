@@ -17,12 +17,12 @@ channels with `com_run`.
 
 ```r
 library(shiny)
-librar(communicate)
+library(communicate)
 
 options(shiny.fullstacktrace = TRUE)
 
-add <- \(x, y = 1){
-  x + y
+add <- \(x){
+  x + 2
 }
 
 ui <- fluidPage(
@@ -36,7 +36,7 @@ server <- \(input, output, session){
   com_run()
 }
 
-shinyApp(ui, server, options = list(port = 3000L))
+shinyApp(ui, server)
 ```
 
 Then use the JavaScript library to communicate.
@@ -44,18 +44,18 @@ Note that the `co
 
 ```r
 library(shiny)
-librar(communicate)
+library(communicate)
 
 options(shiny.fullstacktrace = TRUE)
 
-add <- \(x, y = 1){
-  x + y
+add <- \(x){
+  x + 2
 }
 
 script <- "
   $('#btn').on('click', () => {
     communicate.com('add', {x: 1})
-      .then(res => console.log(res));
+      .then(res => alert(`equals: ${res}`));
   })
 "
 
@@ -72,6 +72,93 @@ server <- \(input, output, session){
   com_run()
 }
 
-shinyApp(ui, server, options = list(port = 3000L))
+shinyApp(ui, server)
 ```
 
+### Types
+
+Though optional it is recommended to specify the types of the arguments
+of your callback function.
+This enables type conversion and type check when communicating from the 
+client.
+
+Existing types:
+
+- `Character`
+- `Numeric`
+- `Integer`
+- `Date`
+- `Posixct`
+- `Posixlt`
+- `Character`
+- `List`
+
+```r
+library(shiny)
+library(communicate)
+
+options(shiny.fullstacktrace = TRUE)
+
+add <- \(x){
+  x + 2
+}
+
+script <- "
+  $('#btn').on('click', () => {
+    communicate.com('add', {x: 1})
+      .then(res => alert(`equals: ${res}`));
+  })
+"
+
+ui <- fluidPage(
+  # import dependencies
+  useCommunicate(),
+  h1("Hello"),
+  tags$a("Communicate", id = "btn"),
+  tags$script(HTML(script))
+)
+
+server <- \(input, output, session){
+  com("add", add)(x = Integer)
+  com_run()
+}
+
+shinyApp(ui, server)
+```
+
+### Defaults
+
+You can also specifiy the function defaults as done below.
+
+```r
+library(shiny)
+library(communicate)
+
+options(shiny.fullstacktrace = TRUE)
+
+add <- \(x, y){
+  x + y
+}
+
+script <- "
+  $('#btn').on('click', () => {
+    communicate.com('add', {x: 1})
+      .then(res => alert(`equals: ${res}`));
+  })
+"
+
+ui <- fluidPage(
+  # import dependencies
+  useCommunicate(),
+  h1("Hello"),
+  tags$a("Communicate", id = "btn"),
+  tags$script(HTML(script))
+)
+
+server <- \(input, output, session){
+  com("add", add)(x = Integer, y = Numeric)(y = 1.1)
+  com_run()
+}
+
+shinyApp(ui, server)
+```

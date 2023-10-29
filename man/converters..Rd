@@ -3,14 +3,14 @@
 \docType{data}
 \name{converters.}
 \alias{converters.}
-\alias{as_character}
-\alias{as_integer}
-\alias{as_numeric}
-\alias{as_date}
-\alias{as_posixct}
-\alias{as_posixlt}
-\alias{as_dataframe}
-\alias{as_list}
+\alias{Character}
+\alias{Integer}
+\alias{Numeric}
+\alias{Date}
+\alias{Posixct}
+\alias{Posixlt}
+\alias{Dataframe}
+\alias{List}
 \title{Type Converters}
 \format{
 An object of class \code{list} of length 2.
@@ -30,21 +30,21 @@ An object of class \code{list} of length 2.
 An object of class \code{list} of length 2.
 }
 \usage{
-as_character
+Character
 
-as_integer
+Integer
 
-as_numeric
+Numeric
 
-as_date
+Date
 
-as_posixct
+Posixct
 
-as_posixlt
+Posixlt
 
-as_dataframe
+Dataframe
 
-as_list
+List
 }
 \description{
 Type converters for convenience.
