@@ -71,8 +71,7 @@ shinyApp(ui, server)
 ### Types
 
 Though optional it is recommended to specify the types of the arguments
-of your callback function.
-This enables type conversion and type check when communicating from the 
+of your callback function. This enables type conversion and type check when communicating from the 
 client.
 
 Existing types:
