@@ -119,7 +119,7 @@ shinyApp(ui, server)
 
 ### Defaults
 
-You can also specifiy the function defaults as done below.
+You can also specifiy callback functions' argument defaults as done below.
 
 ```r
 library(shiny)
@@ -155,7 +155,7 @@ shinyApp(ui, server)
 ## Errors
 
 Ideally you'd want to catch errors as shown below,
-where the callback fails because there is not default for `x`.
+where the callback fails because there is no default for `x`.
 
 ```r
 library(shiny)
