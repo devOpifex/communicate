@@ -15,6 +15,10 @@ async function com(id, args = {}) {
     throw new Error(`No com found for ${id}`);
   }
 
+  if(Object.keys(endpoints).length === 0) {
+    throw new Error("No coms registered, did you forget to registers channels with `com()`");
+  }
+
   const qs = makeQuery(id, args);
 
   const response = await fetch(`${endpoints[id].path}&${qs}`);

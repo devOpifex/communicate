@@ -40,7 +40,6 @@ ui <- fluidPage(
 
 server <- \(input, output, session){
   com("data", get_data)(n = Integer)(n = 5)
-  com_serve()
 }
 
 shinyApp(ui, server)
