@@ -187,3 +187,23 @@ server <- \(input, output, session){
 
 shinyApp(ui, server)
 ```
+
+## JavaScript
+
+Accessible from `communicate`, functions:
+
+- `com` - communicate.
+- `hasCom` - check if communication channel registered.
+- `getCom` - get communication channel and its arguments.
+- `getComs` - get all communication channels registered.
+
+### Examples
+
+```js
+communicate.hasCom("add")
+
+communicate.getCom("add")
+
+communicate.com("add", {x: 1, y: 2})
+```
+
