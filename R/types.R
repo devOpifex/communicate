@@ -1,27 +1,66 @@
-#' Types
-as_character <- \(x){
-  as.character(x)
-}
+#' Type Converters
+#' 
+#' Type converters for convenience.
+#' 
+#' @param x String to convert.
+#' 
+#' @name converters.
+#' @export
+as_character <- list(
+  fn = as.character,
+  type = "character"
+)
 
-as_integer <- \(x){
-  as.integer(x)
-}
+#' @rdname converters.
+#' @export
+as_integer <- list(
+  fn = as.integer,
+  type = "integer"
+)
 
-as_numeric <- \(x){
-  as.numeric(x)
-}
+#' @rdname converters.
+#' @export
+as_numeric <- list(
+  fn = as.numeric,
+  type = "numeric"
+)
 
-as_date <- \(x){
-  as.Date(x)
-}
+#' @rdname converters.
+#' @export
+as_date <- list(
+  fn = as.Date,
+  type = "date"
+)
 
-as_posixct <- \(x){
-  as.POSIXct(x)
-}
+#' @rdname converters.
+#' @export
+as_posixct <- list(
+  fn = as.POSIXct,
+  type = "posix"
+)
 
-as_posixlt <- \(x){
-  as.POSIXlt(x)
-}
+#' @rdname converters.
+#' @export
+as_posixlt <- list(
+  fn = as.POSIXlt,
+  type = "posix"
+)
+
+#' @importFrom jsonlite fromJSON
+#' @rdname converters.
+#' @export
+as_dataframe <- list(
+  fn = fromJSON,
+  type = "dataframe"
+)
+
+#' @importFrom jsonlite fromJSON
+#' @rdname converters.
+#' @export
+as_list <- list(
+  fn = \(x) fromJSON(x, simplifyMatrix = FALSE),
+  type = "list"
+)
 
 #' Parse Arguments
 #' 
@@ -40,8 +79,8 @@ parse_args <- function(args = list(), converters = list()) {
     nms <- names(args)[index]
     converter <- converters[[nms]]
 
-    if(is.function(converter))
-      return(converter(arg))
+    if(is.function(converter$fn))
+      return(converter$fn(arg))
 
     date <- tryCatch(as.Date(arg), error = \(e) NULL)
 
@@ -71,3 +110,31 @@ parse_args <- function(args = list(), converters = list()) {
 
   return(parsed)
 }
+
+#' Get arguments from function
+#' 
+#' Get arguments from handler.
+#' 
+#' @param fn Function.
+#' 
+#' @keywords internal
+get_args <- \(handler, schemas){
+  args <- formalArgs(handler)
+
+  args |>
+    seq_along() |>
+    lapply(\(index) {
+      schema <- schemas[[index]]
+
+      arg <- list(
+        name = args[[index]],
+        type = NULL
+      )
+
+      if(length(schema) > 0)
+        arg$type <- schema$type
+
+      return(arg)
+    })
+}
+

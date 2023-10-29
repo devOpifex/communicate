@@ -1,8 +1,8 @@
 devtools::load_all()
 library(shiny)
 
-add <- \(x, y = 41) {
-  x + y
+df <- \(x){
+  return(x)
 }
 
 ui <- fluidPage(
@@ -11,12 +11,8 @@ ui <- fluidPage(
 )
 
 server <- \(input, output, session){
-  d <- reactiveValues(
-    x = runif(10)
-  )
-
-  com("add")(add)
-  communicate()
+  com("df", df)(x = as_dataframe)
+  com_run()
 }
 
 shinyApp(ui, server, options = list(port = 3000L))
