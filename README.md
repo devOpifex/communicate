@@ -24,8 +24,6 @@ add <- \(x){
 }
 
 ui <- fluidPage(
-  # import dependencies
-  useCommunicate(),
   h1("Hello")
 )
 
@@ -38,7 +36,6 @@ shinyApp(ui, server)
 ```
 
 Then use the JavaScript library to communicate.
-Note that the `co
 
 ```r
 library(shiny)
