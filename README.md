@@ -213,7 +213,8 @@ new communication channels registered.
 This is useful when willing to run things on load.
 
 ```js
-//  this might fail
+//  this might fail because
+// it may run before the com is registered
 $(() => {
   communicate.com("add", {x: 1, y: 2})
     .then(data => console.log(data))
