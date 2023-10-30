@@ -1,9 +1,19 @@
 import "shiny";
 
-let endpoints = {};
+const endpoints = {};
+const timeouts = {};
 
 Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
   endpoints[msg.id] = msg;
+  const event = new CustomEvent("communicate:registered", {
+    detail: getCom(msg.id) || {},
+  });
+
+  // avoid duplicate calls
+  clearTimeout(timeouts[msg.id]);
+  timeouts[msg.id] = setTimeout(() => {
+    document.dispatchEvent(event);
+  }, 250);
 });
 
 async function com(id, args = {}) {
@@ -15,8 +25,10 @@ async function com(id, args = {}) {
     throw new Error(`No com found for ${id}`);
   }
 
-  if(Object.keys(endpoints).length === 0) {
-    throw new Error("No coms registered, did you forget to registers channels with `com()`");
+  if (Object.keys(endpoints).length === 0) {
+    throw new Error(
+      "No coms registered, did you forget to registers channels with `com()`",
+    );
   }
 
   const qs = makeQuery(id, args);

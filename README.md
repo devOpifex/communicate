@@ -208,3 +208,26 @@ communicate.com("add", {x: 1, y: 2})
   .catch(error => console.error(error))
 ```
 
+You can also listen to the `communicate:registered` event on the `document` for
+new communication channels registered.
+This is useful when willing to run things on load.
+
+```js
+//  this might fail
+$(() => {
+  communicate.com("add", {x: 1, y: 2})
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+});
+
+// will run when the channel is registered
+$(document).on("communicate:registered", (event) => {
+  if(event.detail.id != "add")
+    return;
+
+  communicate.com("add", {x: 1, y: 2})
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+})
+```
+
