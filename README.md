@@ -248,4 +248,16 @@ $(document).on("communicate:registered", (event) => {
 })
 ```
 
-Note that reactives re-register the `com` so the above may still run multiple times.
+Note that reactives re-register the `com` so the above may still run multiple times,
+you can prevent this with.
+
+```js
+$(document).on("communicate:registered", (event) => {
+  if(event.detail.id != "add")
+    return;
+
+  communicate.com("add", {x: 1, y: 2})
+    .then(data => console.log(data))
+    .catch(error => console.error(error))
+}. { once: true })
+```
