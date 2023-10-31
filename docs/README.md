@@ -1,12 +1,10 @@
 # Communicate
 
-Small framework to communicate between Shiny client and server via HTTP requests.
-Run `communicate::example()` for a short demo.
+Small framework to communicate between shiny client and server via HTTP requests.
 
-## Installation
+If you want an introduction to using such communication in shiny see the video 
+below.
+This framework attempts to make this more robust and easier to setup.
 
-```r
-# install.packages("remotes")
-remotes::install_github("devOpifex/communicate")
-```
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/LF8obIGSM5M?si=rxGPYX_piPpmnJl5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 

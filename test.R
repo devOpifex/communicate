@@ -3,7 +3,7 @@ library(shiny)
 
 options(shiny.port = 3000)
 
-add <- \(df){
+add_df <- \(df){
   df$x + 1L
 }
 
@@ -25,7 +25,7 @@ ui <- fluidPage(
 )
 
 server <- \(input, output, session){
-  com("add", add)(x = Dataframe)
+  com("add", add_df)(x = Dataframe)
 }
 
 shinyApp(ui, server)

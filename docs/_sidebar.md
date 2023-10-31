@@ -1,6 +1,6 @@
 <!-- docs/_sidebar.md -->
 
 * [Home](/)
-* [R](r.md)
+* [R Package](r.md)
 * [JavaScript](js.md)
 * [Examples](examples.md)
