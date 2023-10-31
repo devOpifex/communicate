@@ -105,7 +105,10 @@ shinyApp(ui, server)
 This example implements a server-side rendered select input with 
 [select2](https://select2.org)
 
-```
+```r
+library(shiny)
+library(communicate)
+
 search <- \(term, ...){
   if(term == "")
     return(list(results = list()))
