@@ -146,3 +146,29 @@ get_args <- \(handler, schemas){
     })
 }
 
+check_args_match <- \(callback, ...) {
+  args <- list(...)
+
+  if(length(args) == 0L)
+    return()
+
+  args <- names(args)
+  cb_args <- methods::formalArgs(callback)
+
+  if(length(cb_args) == 0L)
+    stop("handler takes no argument", call. = FALSE)
+
+  extra_args <- args[!(args %in% cb_args)]
+
+  if(length(extra_args) == 0L)
+    return()
+
+
+  extra_args_str <- paste(extra_args, collapse = ", ")
+
+  sprintf(
+    "arguments not found in handler: %s",
+    extra_args_str
+  ) |> 
+    stop(call. = FALSE)
+}

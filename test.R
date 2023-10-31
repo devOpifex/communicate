@@ -3,32 +3,29 @@ library(shiny)
 
 options(shiny.port = 3000)
 
-add <- \(x){
-  x + 2
+add <- \(df){
+  df$x + 1L
 }
 
 script <- "
-  $(document).on('communicate:registered', (event) => {
-    console.log(event.detail)
-  })
   $('#btn').on('click', (e) => {
-    communicate.com('add', {x: 1})
-      .then(res => alert(`equals: ${res}`));
+    console.log('click');
+    communicate.com('add', {df: [{x: 1}, {x: 2}]})
+      .then(res => alert(`equals: ${res}`))
+      .catch(err => console.error(err));
   })
 "
 
 ui <- fluidPage(
   # import dependencies
   useCommunicate(),
-  tags$head(
-    tags$script(HTML(script))
-  ),
   h1("Hello"),
   tags$a("Communicate", id = "btn"),
+  tags$script(HTML(script))
 )
 
 server <- \(input, output, session){
-  com("add", add)(x = Integer)
+  com("add", add)(x = Dataframe)
 }
 
 shinyApp(ui, server)
