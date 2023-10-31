@@ -6,10 +6,6 @@
 
 > Shiny client-server communication
 
-- Simple and lightweight
-- R package
-- JavaScript package
-
 [GitHub](https://github.com/devOpifex/communicate)
 [Get Started](/r)
 
