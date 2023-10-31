@@ -46,6 +46,7 @@ const getComs = () => {
   for (const property in endpoints) {
     const prop = {
       id: endpoints[property].id,
+      path: endpoints[property].path,
       args: endpoints[property].args,
     };
     ep.push(prop);
