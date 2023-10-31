@@ -196,7 +196,23 @@ Accessible from `communicate`, functions:
 - `getCom` - get communication channel and its arguments.
 - `getComs` - get all communication channels registered.
 
-### Examples
+## Dependency
+
+You import the dependency with `useCommunicate()`.
+Alternatively you can install the npm package, 
+e.g.: if you use [packer](https://packer.john-coene.com/).
+
+```bash
+npm install @devopifex/communicate
+```
+
+Or with packer:
+
+```r
+packer::npm_install("devopifex/communicate")
+```
+
+### Usage
 
 ```js
 communicate.hasCom("add")

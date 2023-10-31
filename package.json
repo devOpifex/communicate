@@ -1,8 +1,8 @@
 {
   "name": "@devopifex/communicate",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Companion package for the communicate R package",
-  "main": "index.js",
+  "main": "srcjs/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "none": "webpack --config webpack.dev.js --mode=none",
