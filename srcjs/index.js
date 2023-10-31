@@ -63,7 +63,7 @@ const getCom = (id) => {
     throw new Error(`No com found for ${id}`);
   }
 
-  return getComs().filter((com) => com.id === id);
+  return getComs().filter((com) => com.id === id)[0];
 };
 
 const hasCom = (id) => {

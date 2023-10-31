@@ -3,53 +3,59 @@ library(shiny)
 
 options(shiny.port = 3000)
 
-get_dataset <- \(dataset){
-  data <- dataset |> get()
+search <- \(term, ...){
+  if(term == "")
+    return(list(results = list()))
 
-  list(
-    header = names(data),
-    data = data |> unname()
-  )
+  # for case insensistive search
+  term <- tolower(term)
+
+  mtcars |>
+    tibble::rownames_to_column() |>
+    dplyr::filter(grepl(term, tolower(rowname))) |>
+    dplyr::pull(rowname) |>
+    head(10) |> # return max 10 results
+    lapply(\(x) list(id = x, text = x)) |>
+    (\(.) list(results = .))()
 }
 
 script <- "
-  $('#btn').on('click', (e) => {
-    const ds = $('#dataset').val();
-    communicate.com('get', {dataset: ds})
-      .then((res) => {
-        const header = res.header.map(el => '<th>' + el + '</th>').join('');
-        const rows = res.data.map(row => {
-          row = row.map(el => '<td>' + el + '</td>').join('');  
-          return '<tr>' + row + '</tr>';
-        }).join('');
-        $('#output thead tr').html(header);
-        $('#output tbody').html(rows); 
-      })
-      .catch(err => console.error(err));
+  $(document).one('communicate:registered', (e) => {
+    if(e.detail.id !== 'search') return;
+
+    $('#models').select2({
+      ajax: {
+        url: communicate.getCom('search').path,
+        dataType: 'json'
+      }
+    })
   })
 "
 
 ui <- fluidPage(
+  theme = bslib::bs_theme(version = 5),
+  tags$head(
+    tags$link(
+      rel = "stylesheet",
+      href = "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+    ),
+    tags$script(
+      src = "https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js",
+      type = "text/javascript"
+    )
+  ),
   # import dependencies
   useCommunicate(),
-  h1("Hello"),
-  selectInput(
-    "dataset",
-    "Select Dataset",
-    choices = c("cars", "mtcars", "iris")
-  ),
-  tags$a("Display table", id = "btn", class = "btn btn-primary"),
-  tags$table(
-    id = "output",
-    class = "table",
-    tags$thead(tags$tr()),
-    tags$tbody()
+  h1("Search a car model from mtcars"),
+  tags$select(
+    id = "models",
+    style = "width: 100%;"
   ),
   tags$script(HTML(script))
 )
 
 server <- \(input, output, session){
-  com("get", get_dataset)(dataset = Character)(dataset = "mtcars")
+  com("search", search)
 }
 
 shinyApp(ui, server)
