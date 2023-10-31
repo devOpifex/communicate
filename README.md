@@ -192,6 +192,7 @@ shinyApp(ui, server)
 Accessible from `communicate`, functions:
 
 - `com` - communicate.
+- `comOnce` - communicate once.
 - `hasCom` - check if communication channel registered.
 - `getCom` - get communication channel and its arguments.
 - `getComs` - get all communication channels registered.
@@ -232,3 +233,5 @@ $(document).on("communicate:registered", (event) => {
 })
 ```
 
+Note that reactives re-register the `com` so the above may still run multiple times.
+If you want to prevent this use `comOnce`.

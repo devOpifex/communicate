@@ -41,6 +41,17 @@ async function com(id, args = {}) {
   return data;
 }
 
+async function comOnce(id, args = {}) {
+  const ran = false;
+
+  if (ran) {
+    return;
+  }
+
+  ran = true;
+  return await com(id, args);
+}
+
 const getComs = () => {
   const ep = [];
   for (const property in endpoints) {
@@ -151,4 +162,4 @@ const typeMatch = (value, valid) => {
   return false;
 };
 
-export { com, getCom, getComs, hasCom };
+export { com, comOnce, getCom, getComs, hasCom };
