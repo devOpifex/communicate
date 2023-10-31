@@ -16,3 +16,5 @@ bundle_dev:
 run: document bundle_dev
 	Rscript test.R
 
+publish:
+	npm publish --access public

@@ -1,5 +1,5 @@
 {
-  "name": "communicate.js",
+  "name": "@devopifex/communicate",
   "version": "1.0.0",
   "description": "Companion package for the communicate R package",
   "main": "index.js",
