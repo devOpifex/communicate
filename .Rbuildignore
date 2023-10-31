@@ -8,3 +8,4 @@
 ^LICENSE\.md$
 ^test\.R$
 ^makefile$
+^docs$
