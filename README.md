@@ -209,7 +209,7 @@ npm install @devopifex/communicate
 Or with packer:
 
 ```r
-packer::npm_install("devopifex/communicate")
+packer::npm_install("@devopifex/communicate")
 ```
 
 ### Usage
