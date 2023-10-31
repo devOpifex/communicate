@@ -12,3 +12,5 @@
 
 [GitHub](https://github.com/devOpifex/communicate)
 [Get Started](/r)
+
+![color](#f0f0f0)
