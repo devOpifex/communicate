@@ -75,6 +75,14 @@ const hasCom = (id) => {
 };
 
 const makeQuery = (id, args) => {
+  if (!id) {
+    throw new Error("No id provided");
+  }
+
+  if (!args) {
+    throw new Error("No args provided");
+  }
+
   const valids = endpoints[id].args;
   const argNames = Object.keys(args);
 
