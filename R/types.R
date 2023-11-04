@@ -4,42 +4,42 @@
 #' 
 #' @name converters.
 #' @export
-Character <- list(
+Character <- list( # nolint
   fn = as.character,
   type = "character"
 )
 
 #' @rdname converters.
 #' @export
-Integer <- list(
+Integer <- list( # nolint
   fn = as.integer,
   type = "integer"
 )
 
 #' @rdname converters.
 #' @export
-Numeric <- list(
+Numeric <- list( # nolint
   fn = as.numeric,
   type = "numeric"
 )
 
 #' @rdname converters.
 #' @export
-Date <- list(
+Date <- list( # nolint
   fn = as.Date,
   type = "date"
 )
 
 #' @rdname converters.
 #' @export
-Posixct <- list(
+Posixct <- list( # nolint
   fn = as.POSIXct,
   type = "posix"
 )
 
 #' @rdname converters.
 #' @export
-Posixlt <- list(
+Posixlt <- list( # nolint
   fn = as.POSIXlt,
   type = "posix"
 )
@@ -47,7 +47,7 @@ Posixlt <- list(
 #' @importFrom jsonlite fromJSON
 #' @rdname converters.
 #' @export
-Dataframe <- list(
+Dataframe <- list( # nolint
   fn = fromJSON,
   type = "dataframe"
 )
@@ -55,7 +55,7 @@ Dataframe <- list(
 #' @importFrom jsonlite fromJSON
 #' @rdname converters.
 #' @export
-List <- list(
+List <- list( # nolint
   fn = \(x) fromJSON(x, simplifyMatrix = FALSE),
   type = "list"
 )
@@ -68,7 +68,7 @@ List <- list(
 #' @param converters List of converters.
 #' 
 #' @keywords internal
-parse_args <- function(args = list(), converters = list()) {
+parse_args <- function(args = list(), converters = list()) { # nolint
   args$w <- NULL
   args$nonce <- NULL
 
@@ -146,6 +146,12 @@ get_args <- \(handler, schemas){
     })
 }
 
+#' Checks that arguments passed matched that in function
+#' 
+#' @param callback Callback function to check against.
+#' @param ... Arguments.
+#' 
+#' @keywords .Internal
 check_args_match <- \(callback, ...) {
   args <- list(...)
 

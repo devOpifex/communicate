@@ -46,7 +46,7 @@ com <- \(id, handler) {
     fn <- \(...) {
       # defaults may be reactives
       observe({
-        check_args_match(env$handlers[[id]] ,...)
+        check_args_match(env$handlers[[id]], ...)
         env$defaults[[id]] <- list(...)
         com_send(id)
       })
@@ -105,7 +105,7 @@ com_serve <- \(session = shiny::getDefaultReactiveDomain()) {
   .Deprecated("com", msg = "this function is deprecated, com suffices")
   handlers <- env$handlers |> names()
 
-  endpoints <- lapply(handlers, \(name) {
+  lapply(handlers, \(name) {
     shiny::observe({
       fn <- \(data, req) {
         args <- parse_query_string(req$QUERY_STRING) |>
@@ -119,7 +119,7 @@ com_serve <- \(session = shiny::getDefaultReactiveDomain()) {
         ) |>
           tryCatch(error = \(e) e)
 
-        status = 200L
+        status <- 200L
         if(inherits(results, "error")) {
           status <- 400L
           results <- list(
@@ -128,7 +128,7 @@ com_serve <- \(session = shiny::getDefaultReactiveDomain()) {
           )
         }
 
-        http_response_json(results)
+        http_response_json(results, status)
       }
 
       path <- session$registerDataObj(
@@ -163,7 +163,7 @@ com_send <- \(name, session = shiny::getDefaultReactiveDomain()) {
     ) |>
       tryCatch(error = \(e) e)
 
-    status = 200L
+    status <- 200L
     if(inherits(results, "error")) {
       status <- 400L
       results <- list(
@@ -172,7 +172,7 @@ com_send <- \(name, session = shiny::getDefaultReactiveDomain()) {
       )
     }
 
-    http_response_json(results)
+    http_response_json(results, status)
   }
 
   path <- session$registerDataObj(

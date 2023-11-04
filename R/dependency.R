@@ -5,12 +5,12 @@
 #' @importFrom htmltools htmlDependency
 #' 
 #' @export
-useCommunicate <- \() {
+useCommunicate <- \() { # nolint
   htmlDependency(
-		"communicate",
-		version = utils::packageVersion("communicate"),
-		src = "assets",
-		package = "communicate",
-		script = "index.js"
-	)
+    "communicate",
+    version = utils::packageVersion("communicate"),
+    src = "assets",
+    package = "communicate",
+    script = "index.js"
+  )
 }

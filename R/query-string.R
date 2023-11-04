@@ -35,4 +35,3 @@ args_from_query_string <- \(qs, schema){
   names(args) <- schema_vars
   return(args)
 }
-
