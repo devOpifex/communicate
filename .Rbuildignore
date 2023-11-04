@@ -9,3 +9,5 @@
 ^test\.R$
 ^makefile$
 ^docs$
+^lintr$
+^\.lintr$
