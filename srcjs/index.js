@@ -3,6 +3,7 @@ import "shiny";
 const endpoints = {};
 const timeouts = {};
 
+// eslint-disable-next-line
 Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
   endpoints[msg.id] = msg;
   const event = new CustomEvent("communicate:registered", {
@@ -86,26 +87,30 @@ const makeQuery = (id, args) => {
   const valids = endpoints[id].args;
   const argNames = Object.keys(args);
 
-  return argNames.map((argName) => {
-    let arg = args[argName];
-    const valid = valids.find((valid) => valid.name === argName);
+  return argNames
+    .map((argName) => {
+      let arg = args[argName];
+      const valid = valids.find((valid) => valid.name === argName);
 
-    if (!valid) {
-      throw new Error(
-        `Invalid argument: ${argName}, not handled by R function`,
-      );
-    }
+      if (!valid) {
+        throw new Error(
+          `Invalid argument: ${argName}, not handled by R function`,
+        );
+      }
 
-    if (!typeMatch(arg, valid)) {
-      throw new Error(
-        `Invalid argument: ${argName}, type mismatch, expected ${valid.type}, got ${typeof arg}`,
-      );
-    }
+      if (!typeMatch(arg, valid)) {
+        throw new Error(
+          `Invalid argument: ${argName}, type mismatch, expected ${
+            valid.type
+          }, got ${typeof arg}`,
+        );
+      }
 
-    arg = convertArg(arg);
+      arg = convertArg(arg);
 
-    return `${argName}=${encodeURIComponent(arg)}`;
-  }).join("&");
+      return `${argName}=${encodeURIComponent(arg)}`;
+    })
+    .join("&");
 };
 
 const isDate = (x) => {
