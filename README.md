@@ -82,6 +82,7 @@ Existing types:
 - `Numeric`
 - `Integer`
 - `Date`
+- `Dataframe`
 - `Posixct`
 - `Posixlt`
 - `Character`
