@@ -17,7 +17,7 @@ Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
   }, 250);
 });
 
-async function com(id, args = {}) {
+async function com(id, args) {
   if (!id) {
     throw new Error("No id provided");
   }
@@ -25,6 +25,8 @@ async function com(id, args = {}) {
   if (!hasCom(id)) {
     throw new Error(`No com found for ${id}`);
   }
+
+  if (!args) args = {};
 
   if (Object.keys(endpoints).length === 0) {
     throw new Error(

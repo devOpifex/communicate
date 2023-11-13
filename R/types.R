@@ -169,7 +169,6 @@ check_args_match <- \(callback, ...) {
   if(length(extra_args) == 0L)
     return()
 
-
   extra_args_str <- paste(extra_args, collapse = ", ")
 
   sprintf(

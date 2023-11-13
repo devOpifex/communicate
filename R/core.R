@@ -45,11 +45,9 @@ com <- \(id, handler) {
 
     fn <- \(...) {
       # defaults may be reactives
-      observe({
-        check_args_match(env$handlers[[id]], ...)
-        env$defaults[[id]] <- list(...)
-        com_send(id)
-      })
+      check_args_match(env$handlers[[id]], ...)
+      env$defaults[[id]] <- list(...)
+      com_send(id)
     } 
 
     fn |>
