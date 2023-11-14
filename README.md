@@ -87,6 +87,7 @@ Existing types:
 - `Posixlt`
 - `Character`
 - `List`
+- `Function`
 
 ```r
 library(shiny)

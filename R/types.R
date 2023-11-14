@@ -60,6 +60,14 @@ List <- list( # nolint
   type = "list"
 )
 
+#' @importFrom jsonlite fromJSON
+#' @rdname converters.
+#' @export
+Function <- list( # nolint
+  fn = as.character,
+  type = "function"
+)
+
 #' Parse Arguments
 #' 
 #' Attempts to parse query string for embeds into R objects.

@@ -11,8 +11,11 @@
 \alias{Posixlt}
 \alias{Dataframe}
 \alias{List}
+\alias{Function}
 \title{Type Converters}
 \format{
+An object of class \code{list} of length 2.
+
 An object of class \code{list} of length 2.
 
 An object of class \code{list} of length 2.
@@ -45,6 +48,8 @@ Posixlt
 Dataframe
 
 List
+
+Function
 }
 \description{
 Type converters for convenience.
