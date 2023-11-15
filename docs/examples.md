@@ -35,7 +35,7 @@ ui <- fluidPage(
 )
 
 server <- \(input, output, session){
-  com("add", add_df)(x = Dataframe)
+  com("add", add_df)(df = Dataframe)
 }
 
 shinyApp(ui, server)

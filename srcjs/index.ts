@@ -1,23 +1,41 @@
 import "shiny";
 
-const endpoints = {};
-const timeouts = {};
+declare global {
+  interface Window {
+    Shiny: {
+      addCustomMessageHandler: (
+        id: string,
+        fn: (msg: setPathMsg) => void,
+      ) => void;
+    };
+  }
+}
+
+const endpoints: any = {};
+const timeouts: any = {};
+
+interface setPathMsg {
+  id: string;
+}
 
 // eslint-disable-next-line
-Shiny.addCustomMessageHandler("communicate-set-path", (msg) => {
-  endpoints[msg.id] = msg;
-  const event = new CustomEvent("communicate:registered", {
-    detail: getCom(msg.id) || {},
-  });
+window.Shiny.addCustomMessageHandler(
+  "communicate-set-path",
+  (msg: setPathMsg) => {
+    endpoints[msg.id] = msg;
+    const event = new CustomEvent("communicate:registered", {
+      detail: getCom(msg.id) || {},
+    });
 
-  // avoid duplicate calls
-  clearTimeout(timeouts[msg.id]);
-  timeouts[msg.id] = setTimeout(() => {
-    document.dispatchEvent(event);
-  }, 250);
-});
+    // avoid duplicate calls
+    clearTimeout(timeouts[msg.id]);
+    timeouts[msg.id] = setTimeout(() => {
+      document.dispatchEvent(event);
+    }, 250);
+  },
+);
 
-async function com(id, args) {
+async function com(id: string, args) {
   if (!id) {
     throw new Error("No id provided");
   }
@@ -44,10 +62,25 @@ async function com(id, args) {
   return data;
 }
 
-const getComs = () => {
-  const ep = [];
+interface argDef {
+  fn: string;
+  type: string;
+}
+
+type argsDefs = argDef[];
+
+interface comDef {
+  id: string;
+  path: string;
+  args: argsDefs;
+}
+
+type comsDef = comDef[];
+
+function getComs(): comsDef {
+  const ep: comsDef = [];
   for (const property in endpoints) {
-    const prop = {
+    const prop: comDef = {
       id: endpoints[property].id,
       path: endpoints[property].path,
       args: endpoints[property].args,
@@ -55,9 +88,9 @@ const getComs = () => {
     ep.push(prop);
   }
   return ep;
-};
+}
 
-const getCom = (id) => {
+function getCom(id: string): comDef {
   if (!id) {
     throw new Error("No id provided");
   }
@@ -67,17 +100,17 @@ const getCom = (id) => {
   }
 
   return getComs().filter((com) => com.id === id)[0];
-};
+}
 
-const hasCom = (id) => {
+function hasCom(id: string): boolean {
   if (!id) {
     throw new Error("No id provided");
   }
 
   return getComs().some((com) => com.id === id);
-};
+}
 
-const makeQuery = (id, args) => {
+function makeQuery(id: string, args: any): string {
   if (!id) {
     throw new Error("No id provided");
   }
@@ -113,13 +146,13 @@ const makeQuery = (id, args) => {
       return `${argName}=${encodeURIComponent(arg)}`;
     })
     .join("&");
-};
+}
 
-const isDate = (x) => {
+function isDate(x: any): boolean {
   return x instanceof Date;
-};
+}
 
-const convertArg = (arg) => {
+function convertArg(arg: any): string {
   if (isDate(arg)) {
     return arg;
   }
@@ -129,9 +162,9 @@ const convertArg = (arg) => {
   }
 
   return arg;
-};
+}
 
-const typeMatch = (value, valid) => {
+function typeMatch(value: any, valid: any): boolean {
   if (!valid.type) {
     return true;
   }
@@ -165,6 +198,6 @@ const typeMatch = (value, valid) => {
   }
 
   return false;
-};
+}
 
 export { com, getCom, getComs, hasCom };

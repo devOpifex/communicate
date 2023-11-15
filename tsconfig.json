@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "outDir": "./inst/assets",
+    "noImplicitAny": false,
+    "module": "es6",
+    "target": "es5"
+  }
+}

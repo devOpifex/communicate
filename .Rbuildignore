@@ -12,3 +12,4 @@
 ^lintr$
 ^\.lintr$
 ^\.eslintrc\.js$
+^tsconfig\.json$
