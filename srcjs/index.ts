@@ -201,3 +201,4 @@ function typeMatch(value: any, valid: any): boolean {
 }
 
 export { com, getCom, getComs, hasCom };
+export type { argsDefs, comsDef, argDef, comDef };
