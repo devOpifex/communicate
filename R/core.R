@@ -47,7 +47,23 @@ com <- \(id, handler) {
       # defaults may be reactives
       check_args_match(env$handlers[[id]], ...)
       env$defaults[[id]] <- list(...)
-      com_send(id)
+
+      on.exit(
+        com_send(id),
+        add = TRUE
+      )
+
+      fn <- \(handler, ...){
+        if(!is.function(handler))
+          stop("Handler must be a function")
+
+        if(length(methods::formalArgs(handler)) < 1L)
+          stop("Handler must have at least one argument")
+
+        env$errors[[id]] <- handler
+      } |>
+        construct_errors_fn() |>
+        invisible()
     } 
 
     fn |>
@@ -82,6 +98,15 @@ construct_converters_fn <- \(fn) {
   )
 }
 
+#' @rdname constructors
+#' @keywords internal
+construct_errors_fn <- \(fn) {
+  structure(
+    fn,
+    class = c("errors_fn", class(fn))
+  )
+}
+
 #' @export
 print.defaults_fn <- \(x, ...) {
   cat("Add defaults, e.g.: (x = 1)\n")
@@ -90,6 +115,11 @@ print.defaults_fn <- \(x, ...) {
 #' @export
 print.converters_fn <- \(x, ...) {
   cat("Add converters, e.g.: (x = as_dataframe)\n")
+}
+
+#' @export
+print.errors_fn <- \(x, ...) {
+  cat("Add error handlers, e.g.: (error_handler_fn)\n")
 }
 
 #' Communicate
@@ -124,6 +154,10 @@ com_serve <- \(session = shiny::getDefaultReactiveDomain()) {
             error = results$message,
             id = results$id
           )
+
+          if(env$errors[[name]]){
+            env$errors[[name]](results)
+          }
         }
 
         http_response_json(results, status)
@@ -164,6 +198,10 @@ com_send <- \(name, session = shiny::getDefaultReactiveDomain()) {
     status <- 200L
     if(inherits(results, "error")) {
       status <- 400L
+      if(length(env$errors[[name]])){
+        env$errors[[name]](results)
+      }
+
       results <- list(
         error = results$message,
         id = results$id

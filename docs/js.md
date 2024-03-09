@@ -21,6 +21,8 @@ packer::npm_install("@devopifex/communicate")
 Ideally you'd want to catch errors as shown below,
 where the callback fails because there is no default for `x`.
 
+See the R Package page to see how to handle errors R-side.
+
 ```r
 library(shiny)
 library(communicate)

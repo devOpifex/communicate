@@ -2,6 +2,7 @@
 
 S3method(print,converters_fn)
 S3method(print,defaults_fn)
+S3method(print,errors_fn)
 export(Character)
 export(Dataframe)
 export(Date)

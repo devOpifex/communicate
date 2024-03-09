@@ -35,7 +35,7 @@ window.Shiny.addCustomMessageHandler(
   },
 );
 
-async function com(id: string, args) {
+async function com(id: string, args: any) {
   if (!id) {
     throw new Error("No id provided");
   }
@@ -125,7 +125,7 @@ function makeQuery(id: string, args: any): string {
   return argNames
     .map((argName) => {
       let arg = args[argName];
-      const valid = valids.find((valid) => valid.name === argName);
+      const valid = valids.find((valid: any) => valid.name === argName);
 
       if (!valid) {
         throw new Error(

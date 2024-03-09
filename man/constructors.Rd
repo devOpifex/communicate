@@ -4,11 +4,14 @@
 \alias{constructors}
 \alias{construct_defaults_fn}
 \alias{construct_converters_fn}
+\alias{construct_errors_fn}
 \title{Constructors}
 \usage{
 construct_defaults_fn(fn)
 
 construct_converters_fn(fn)
+
+construct_errors_fn(fn)
 }
 \description{
 Adds classes to returned function to allow print method.

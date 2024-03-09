@@ -143,3 +143,46 @@ server <- \(input, output, session){
 
 shinyApp(ui, server)
 ```
+
+## Error handling
+
+Finally, you can pass an error handler.
+
+Note that the code below purposely fails.
+
+```r
+library(shiny)
+library(communicate)
+
+add <- \(x, y){
+  x + y + "error" # this will cause an error
+} 
+
+err <- \(error){
+  cat("Aaaaah, an error!\n")
+  print(error)
+}
+
+# more on JavaScript error handling in the JavaScript page
+script <- "
+  $('#btn').on('click', () => {
+    communicate.com('add', {x: 1})
+      .then(res => alert(`equals: ${res}`))
+      .catch(error => alert('There was an error')); # catch error
+  })
+"
+
+ui <- fluidPage(
+  # import dependencies
+  useCommunicate(),
+  h1("Hello"),
+  tags$a("Communicate", id = "btn"),
+  tags$script(HTML(script))
+)
+
+server <- \(input, output, session){
+  com("add", add)(x = Integer, y = Numeric)(y = 1.1)(err)
+}
+
+shinyApp(ui, server)
+```

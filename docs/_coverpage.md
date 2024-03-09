@@ -9,4 +9,4 @@
 [GitHub](https://github.com/devOpifex/communicate)
 [Get Started](/r)
 
-![color](#3f3f3f)
+![color](#fff)

@@ -6,3 +6,4 @@ env$prefix <- NULL
 env$handlers <- list()
 env$schemas <- list()
 env$defaults <- list()
+env$errors <- list()
