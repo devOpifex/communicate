@@ -4,7 +4,7 @@ RESERVED_TYPES <- c(
   "numeric",
   "date",
   "posix",
-  "dateframe",
+  "dataframe",
   "list",
   "function"
 )

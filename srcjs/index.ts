@@ -175,7 +175,7 @@ const RESERVED_TYPE = [
   "numeric",
   "date",
   "posix",
-  "dateframe",
+  "dataframe",
   "list",
   "function",
 ];
@@ -187,6 +187,8 @@ function typeMatch(value: any, valid: any): boolean {
 
   if (!RESERVED_TYPE.includes(valid.type)) {
     const checker = types.find((type: any) => type.type === valid.type);
+
+    if (!checker) return false;
 
     if (!checker.js_checker) return true;
 
