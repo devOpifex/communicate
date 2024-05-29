@@ -1,3 +1,14 @@
+RESERVED_TYPES <- c(
+  "character",
+  "integer",
+  "numeric",
+  "date",
+  "posix",
+  "dateframe",
+  "list",
+  "function"
+)
+
 #' Type Converters
 #' 
 #' Type converters for convenience.
@@ -132,7 +143,8 @@ parse_args <- function(args = list(), converters = list()) { # nolint
 #' 
 #' Get arguments from handler.
 #' 
-#' @param fn Function.
+#' @param handler Function handler.
+#' @param schemas List of schemas.
 #' 
 #' @keywords internal
 get_args <- \(handler, schemas){
@@ -184,4 +196,50 @@ check_args_match <- \(callback, ...) {
     extra_args_str
   ) |> 
     stop(call. = FALSE)
+}
+
+#' Create type
+#' 
+#' Create a new type with its associated checker and converter.
+#' 
+#' @param r_converter R converter function to transform the value.
+#'    received from the server to the desired type in R.
+#' @param js_checker JavaScript checker function to check if the value
+#'    received from the client is of the desired type.
+#' @param name Name of the type.
+#' 
+#' @export
+create_type <- function(
+  r_converter,
+  js_checker = NULL,
+  name = NULL
+){
+  if(missing(r_converter)) stop("missing `r_converter`")
+
+  if(is.null(name))
+    name <- letters |>
+      c(1:9) |>
+      sample() |>
+      (\(x) paste0(x, collapse = ""))()
+
+  if(name %in% RESERVED_TYPES)
+    stop("this `name` is reserved")
+
+  env$types <- append(
+    env$types,
+    list(
+      list(
+        type = name,
+        r_converter = r_converter,
+        js_checker = js_checker
+      )
+    )
+  )
+
+  invisible(
+    list(
+      fn = r_converter,
+      type = name
+    )
+  )
 }

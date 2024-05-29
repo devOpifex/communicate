@@ -217,13 +217,23 @@ com_send <- \(name, session = shiny::getDefaultReactiveDomain()) {
     fn
   )
 
+  payload = list(
+    id = name, 
+    path = path,
+    args = get_args(env$handlers[[name]], env$schemas[[name]])
+  )
+
+  if(!env$types_sent && length(env$types) > 0L) {
+    payload$types <- env$types |> lapply(\(type) {
+      type$r_converter <- NULL
+      return(type)
+    })
+    env$types_sent <- TRUE
+  }
+
   session$sendCustomMessage(
     type = "communicate-set-path",
-    message = list(
-      id = name, 
-      path = path,
-      args = get_args(env$handlers[[name]], env$schemas[[name]])
-    )
+    message = payload
   )
 }
 

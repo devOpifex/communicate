@@ -7,3 +7,5 @@ env$handlers <- list()
 env$schemas <- list()
 env$defaults <- list()
 env$errors <- list()
+env$types <- list()
+env$types_sent <- FALSE

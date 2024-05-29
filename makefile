@@ -18,3 +18,4 @@ run: document bundle_dev
 
 publish:
 	npm publish --access public
+
