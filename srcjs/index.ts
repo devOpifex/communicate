@@ -13,9 +13,11 @@ declare global {
 
 const endpoints: any = {};
 const timeouts: any = {};
+let types: any = [];
 
 interface setPathMsg {
   id: string;
+  types: any;
 }
 
 // eslint-disable-next-line
@@ -23,6 +25,9 @@ window.Shiny.addCustomMessageHandler(
   "communicate-set-path",
   (msg: setPathMsg) => {
     endpoints[msg.id] = msg;
+
+    if (msg.types) types = msg.types;
+
     const event = new CustomEvent("communicate:registered", {
       detail: getCom(msg.id) || {},
     });
@@ -164,9 +169,36 @@ function convertArg(arg: any): string {
   return arg;
 }
 
+const RESERVED_TYPE = [
+  "character",
+  "integer",
+  "numeric",
+  "date",
+  "posix",
+  "dataframe",
+  "list",
+  "function",
+];
+
 function typeMatch(value: any, valid: any): boolean {
   if (!valid.type) {
     return true;
+  }
+
+  if (!RESERVED_TYPE.includes(valid.type)) {
+    const checker = types.find((type: any) => type.type === valid.type);
+
+    if (!checker) return false;
+
+    if (!checker.js_checker) return true;
+
+    const fn = eval(checker.js_checker);
+    const result = fn(value);
+
+    if (typeof result === "boolean") return result;
+
+    console.error("custom type checker must return a boolean value");
+    return false;
   }
 
   if (isDate(value) && valid.type === "date") {

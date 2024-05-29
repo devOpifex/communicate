@@ -7,7 +7,9 @@
 get_args(handler, schemas)
 }
 \arguments{
-\item{fn}{Function.}
+\item{handler}{Function handler.}
+
+\item{schemas}{List of schemas.}
 }
 \description{
 Get arguments from handler.
